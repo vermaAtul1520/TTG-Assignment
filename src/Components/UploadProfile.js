@@ -15,11 +15,15 @@ const UploadProfile = () => {
     const uploadImage = async () => {
         if (profileImage == null) return;
         const imageRef = ref(storage, auth.currentUser.email + "/profileImage");
-        console.log("first");
-        await uploadBytes(imageRef, profileImage)
-        console.log("second");
-        navigate('/');
+        try {
+            console.log("first");
+            await uploadBytes(imageRef, profileImage);
+            navigate('/');
+        } catch (error) {
+            console.error("Error uploading image:", error);
+        }
     }
+    
 
     const convertBase64 = (file) => {
         return new Promise((resolve, reject) => {
