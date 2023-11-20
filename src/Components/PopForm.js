@@ -13,9 +13,14 @@ import {
 
 const PopForm = ({ isOpen, onClose }) => {
   const [inputValue, setInputValue] = useState('');
+  const [isPurchased, setIsPurchased] = useState(false);
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
+  };
+
+  const handleCheckboxChange = () => {
+    setIsPurchased((prevIsPurchased) => !prevIsPurchased);
   };
 
   const handleSubmit = () => {
@@ -23,11 +28,13 @@ const PopForm = ({ isOpen, onClose }) => {
     console.log('Submitted value:', inputValue);
     createEntries({
       product: inputValue,
+      purchase: isPurchased
     }).then(() => {
       console.log("done");
     });
     // Reset the input value
     setInputValue('');
+    setIsPurchased(false);
     // Close the pop-up form
     onClose();
   };
@@ -44,6 +51,10 @@ const PopForm = ({ isOpen, onClose }) => {
       <label>
         Input Field:
         <input type="text" value={inputValue} onChange={handleInputChange} />
+      </label>
+      <label>
+        <input type="checkbox" checked={isPurchased} onChange={handleCheckboxChange} />
+        Is Purchased
       </label>
       <button onClick={handleSubmit}>Submit</button>
       <button onClick={onClose}>Close</button>
