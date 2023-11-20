@@ -7,6 +7,10 @@ import { v4 } from 'uuid'
 import { NavLink } from 'react-router-dom'
 import PopForm from './PopForm';
 import UploadComponent from './UploadComponent';
+import {productsRef} from '../firebase'
+import {
+    onValue
+  } from "firebase/database";
 // import image from './folder.png'
 
 const AllFolder = () => {
@@ -21,51 +25,61 @@ const AllFolder = () => {
         setPopupOpen(false);
     };
 
-    // const [folder, setFolder] = useState([])
-    // const [user, setUser] = useState({})
+    const [products, setProducts] = useState([]);
 
-    // useEffect(() => {
+    useEffect(() => {
+        
+        // Set up a real-time listener to fetch and update the products
+        const unsubscribe = onValue(productsRef, (snapshot) => {
+            console.log("effect calledddd")
+            const data = snapshot.val();
+            if (data) {
+                // Convert the data object into an array of products
+                const productList = Object.keys(data).map((productId) => ({
+                    id: productId,
+                    ...data[productId],
+                }));
+                console.log("productList",productList)
+                setProducts(productList);
+            } else {
+                setProducts([]);
+            }
+        });
 
-    //     onAuthStateChanged(auth, (currentUser) => {
-    //         setUser(currentUser);
-    //         const imagesListRef = ref(storage, currentUser?.email);
-    //         listAll(imagesListRef).then((res) => {
-    //             const AllFolder = res.prefixes.map((val) => val._location.path_.slice(currentUser?.email.length + 1))
-    //             setFolder(AllFolder);
-    //         })
-    //     })
+        // Clean up the listener when the component unmounts
+        return () => unsubscribe();
+    }, []); // Empty dependency array to run the effect only once
 
-    // }, []);
+    useEffect(()=>{
+     console.log("products",products)
+    },[products])
 
     return (
         <>
-        {/* <UploadComponent folderdetail={folder} user={user.email} addFolder={setFolder} /> */}
+            {/* <UploadComponent folderdetail={folder} user={user.email} addFolder={setFolder} /> */}
             <button onClick={openPopup}>Add product</button>
             <PopForm isOpen={isPopupOpen} onClose={closePopup} />
+            {/* <UploadComponent folderdetail={folder} user={user.email} addFolder={setFolder} /> */}
+            <div className='allFolderGrid'>
+                {
+                    products.length ?
+                        <div className='cards'>
+                            {
+                                products.map((val) =>
+
+                                    <div key={v4()} className='card' >
+                                        <h1>
+                                          {val?.product}
+                                        </h1>
+                                    </div>
+                                )
+                            }
+                        </div>
+                        :
+                        null
+                }
+            </div>
         </>
-        // <>
-        //     {/* <UploadComponent folderdetail={folder} user={user.email} addFolder={setFolder} /> */}
-        //     <div className='allFolderGrid'>
-        //         {
-        //             folder.length ?
-        //                 <div className='cards'>
-        //                     {
-        //                         folder.map((val) =>
-
-        //                             <div key={v4()} className='card' >
-        //                                 <NavLink to="/imageviewer" state={user?.email + "/" + val}>
-        //                                     {/* <img src={image} width='80px' alt='Folder : ' /><h4>{val }</h4> */}
-        //                                 </NavLink>
-
-        //                             </div>
-        //                         )
-        //                     }
-        //                 </div>
-        //                 :
-        //                 null
-        //         }
-        //     </div>
-        // </>
     )
 }
 

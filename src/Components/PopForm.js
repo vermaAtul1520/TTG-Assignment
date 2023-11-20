@@ -11,7 +11,6 @@ import {
   // remove,
 } from "firebase/database";
 
-console.log("productsRef",productsRef)
 const PopForm = ({ isOpen, onClose }) => {
   const [inputValue, setInputValue] = useState('');
 
