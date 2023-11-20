@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {productsRef} from '../firebase'
+import './PopForm.css' 
 import {
   // get,
   push,
@@ -25,7 +26,7 @@ const PopForm = ({ isOpen, onClose }) => {
 
   const handleSubmit = () => {
     // You can perform any action with the input value here
-    console.log('Submitted value:', inputValue);
+    // console.log('Submitted value:', inputValue);
     createEntries({
       product: inputValue,
       purchase: isPurchased,
@@ -47,18 +48,24 @@ const PopForm = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div style={{ display: isOpen ? 'block' : 'none', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', padding: '20px', background: '#fff', boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)' }}>
-      <h2>Pop-up Form</h2>
-      <label>
-        Input Field:
-        <input type="text" value={inputValue} onChange={handleInputChange} />
-      </label>
-      <label>
-        <input type="checkbox" checked={isPurchased} onChange={handleCheckboxChange} />
-        Is Purchased
-      </label>
-      <button onClick={handleSubmit}>Submit</button>
-      <button onClick={onClose}>Close</button>
+    <div className='parentModal'style={{ display: isOpen ? 'block' : 'none', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', padding: '20px', background: '#fff', boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',borderRadius:'10px' }}>
+      <h2>Add Product</h2>
+      <div className='productName'>
+        <label>
+          Product Name
+          <input type="text" value={inputValue} onChange={handleInputChange} />
+        </label>
+      </div>
+      <div className='status'>
+        <label>
+          <input type="checkbox" checked={isPurchased} onChange={handleCheckboxChange} />
+          Is Purchased
+        </label>
+      </div>
+      <div className='buttonContainer'>
+        <button className='submit' onClick={handleSubmit}>Submit</button>
+        <button className='close' onClick={onClose}>Close</button>
+      </div>
     </div>
   );
 };

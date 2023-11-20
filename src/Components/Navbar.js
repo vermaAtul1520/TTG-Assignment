@@ -14,11 +14,13 @@ const NavBar = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      const imagesListRef = ref(storage, `${currentUser?.email}/profileImage`);
-      getDownloadURL(imagesListRef).then((res) => {
-        setProfileURL(res);
-      });
+      if (currentUser) {
+        setUser(currentUser);
+        const imagesListRef = ref(storage, `${currentUser?.email}/profileImage`);
+        getDownloadURL(imagesListRef).then((res) => {
+          setProfileURL(res);
+        });
+      }
     });
   }, []);
 
