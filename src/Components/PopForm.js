@@ -28,7 +28,8 @@ const PopForm = ({ isOpen, onClose }) => {
     console.log('Submitted value:', inputValue);
     createEntries({
       product: inputValue,
-      purchase: isPurchased
+      purchase: isPurchased,
+      quantity: 1
     }).then(() => {
       console.log("done");
     });

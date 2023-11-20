@@ -53,7 +53,7 @@ const AllFolder = () => {
 
         // Clean up the listener when the component unmounts
         return () => unsubscribe();
-    }, []); // Empty dependency array to run the effect only once
+    }, []); 
 
     const removeData = async (productId) => {
         try {
@@ -82,6 +82,20 @@ const AllFolder = () => {
         updateData(object);
     };
 
+    const handleQuantityIncrement = (object) => {
+        console.log("hellloooo",object)
+        object.quantity+=1;
+        updateData(object);
+    };
+
+    const handleQuantityDecrement = (object) => {
+        console.log("hellloooo",object)
+        if (object.quantity > 1) {
+            object.quantity-=1;
+            updateData(object);
+        }
+    };
+
     return (
         <>
             <button onClick={openPopup}>Add product</button>
@@ -103,8 +117,17 @@ const AllFolder = () => {
                                                 removeData(val?.id)
                                             }}
                                         />
-                                        {!val?.purchase ? <ImCheckboxUnchecked onClick={()=>handleCheckboxClick({...val},true)}/>
-                                            : <ImCheckboxChecked onClick={()=>handleCheckboxClick({...val},false)}/>}
+                                        {!val?.purchase ? <ImCheckboxUnchecked onClick={() => handleCheckboxClick({ ...val }, true)} />
+                                            : <ImCheckboxChecked onClick={() => handleCheckboxClick({ ...val }, false)} />}
+                                        <div style={quantityControlStyle}>
+                                            <button onClick={()=>handleQuantityDecrement({ ...val })} style={buttonStyle}>
+                                                -
+                                            </button>
+                                            <span style={{ margin: '0 8px', fontSize: '16px' }}>{val?.quantity}</span>
+                                            <button onClick={()=>handleQuantityIncrement({ ...val })} style={buttonStyle}>
+                                                +
+                                            </button>
+                                        </div>
                                     </div>
                                 )
                             }
@@ -117,4 +140,17 @@ const AllFolder = () => {
     )
 }
 
+
+
+const quantityControlStyle = {
+    display: 'flex',
+    alignItems: 'center',
+  };
+
+  const buttonStyle = {
+    cursor: 'pointer',
+    marginLeft: '8px',
+    padding: '4px 8px',
+    fontSize: '16px',
+  };
 export default AllFolder
