@@ -3,8 +3,10 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, storage } from "../firebase";
 import { ref, getDownloadURL } from "firebase/storage";
 import { NavLink, useNavigate } from "react-router-dom";
-import { GiArmorUpgrade } from "react-icons/gi";
+import { CgProfile } from "react-icons/cg";
 import "./NavBar.css";
+import  UploadProfile from './UploadProfile';
+
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -14,11 +16,17 @@ const NavBar = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      const imagesListRef = ref(storage, `${currentUser?.email}/profileImage`);
-      getDownloadURL(imagesListRef).then((res) => {
-        setProfileURL(res);
-      });
+      if (currentUser) {
+        setUser(currentUser);
+        const imagesListRef = ref(storage, `${currentUser?.email}/profileImage`);
+        console.log("imagesListRef",imagesListRef)
+        getDownloadURL(imagesListRef).then((res) => {
+          setProfileURL(res);
+        }).catch((err)=>{
+          setProfileURL('');
+          console.log(err)
+        });
+      }
     });
   }, []);
 
@@ -33,12 +41,11 @@ const NavBar = () => {
         <h2>{user.displayName}</h2>
       </div>
       <div className="userDetail">
-        <NavLink to="/upgradetopremium">
-          <GiArmorUpgrade /> Premium
-        </NavLink>
         <NavLink to="/about">Developer</NavLink>
         <p onClick={logout}>SignOut</p>
-        <img src={profileURL} alt="Profile" />
+        <NavLink to="/uploadprofile">
+          {profileURL?.length ? <img src={profileURL} alt="Profile" /> : <div className="profileImg"><CgProfile size={40} /></div>}
+        </NavLink>
       </div>
     </nav>
   );

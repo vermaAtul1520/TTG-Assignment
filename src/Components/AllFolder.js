@@ -1,46 +1,129 @@
 import React, { useState, useEffect } from 'react'
 import './AllFolder.css'
 import { auth, storage } from '../firebase'
-import { ref, listAll } from 'firebase/storage'
+// import { ref, listAll } from 'firebase/storage'
 import { onAuthStateChanged } from "firebase/auth";
 import { v4 } from 'uuid'
 import { NavLink } from 'react-router-dom'
-// import UploadComponent from './UploadComponent';
+import PopForm from './PopForm';
+import UploadComponent from './UploadComponent';
+import {productsRef} from '../firebase'
+import {
+    onValue,
+    child,
+    remove,
+    update
+  } from "firebase/database";
+  import { MdDeleteOutline } from "react-icons/md";
+import { ImCheckboxUnchecked, ImCheckboxChecked } from "react-icons/im";
 // import image from './folder.png'
 
 const AllFolder = () => {
 
-    const [folder, setFolder] = useState([])
-    const [user, setUser] = useState({})
+    const [isPopupOpen, setPopupOpen] = useState(false);
+
+    const openPopup = () => {
+        setPopupOpen(true);
+    };
+
+    const closePopup = () => {
+        setPopupOpen(false);
+    };
+
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
+        const unsubscribe = onValue(productsRef, (snapshot) => {
+            console.log("effect calledddd")
+            const data = snapshot.val();
+            if (data) {
+                const productList = Object.keys(data).map((productId) => ({
+                    id: productId,
+                    ...data[productId],
+                }));
+                setProducts(productList);
+            } else {
+                setProducts([]);
+            }
+        });
+        
+        return () => unsubscribe();
+    }, []); 
 
-        onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            const imagesListRef = ref(storage, currentUser?.email);
-            listAll(imagesListRef).then((res) => {
-                const AllFolder = res.prefixes.map((val) => val._location.path_.slice(currentUser?.email.length + 1))
-                setFolder(AllFolder);
-            })
-        })
+    const removeData = async (productId) => {
+        try {
+            const productToDeleteRef = child(productsRef, productId);
+            await remove(productToDeleteRef).then((res) => console.log(res));
+        }
+        catch (error) {
+            console.error(`Error updating product with ID ${productId}:`, error);
+        }
+    };
 
-    }, []);
+    const updateData = async (upDatedData) => {
+        try {
+            const productToDeleteRef = child(productsRef, upDatedData?.id);
+            await update(productToDeleteRef,upDatedData).then((res) => console.log(res)).then((res) => console.log(res));
+        }
+        catch (error) {
+            console.error(`Error updating product with ID ${upDatedData?.id}:`, error);
+        }
+    };
+
+    const handleCheckboxClick = (object,status) => {
+        // console.log("status",object,status);
+        object.purchase=status;
+        // console.log("status",object,status);
+        updateData(object);
+    };
+
+    const handleQuantityIncrement = (object) => {
+        console.log("hellloooo",object)
+        object.quantity+=1;
+        updateData(object);
+    };
+
+    const handleQuantityDecrement = (object) => {
+        console.log("hellloooo",object)
+        if (object.quantity > 1) {
+            object.quantity-=1;
+            updateData(object);
+        }
+    };
 
     return (
         <>
-            {/* <UploadComponent folderdetail={folder} user={user.email} addFolder={setFolder} /> */}
+            <div className='addButton'>
+                <button onClick={openPopup}>Add product</button>
+            </div>
+            <PopForm isOpen={isPopupOpen} onClose={closePopup} />
             <div className='allFolderGrid'>
                 {
-                    folder.length ?
+                    products.length ?
                         <div className='cards'>
                             {
-                                folder.map((val) =>
+                                products.map((val) =>
 
                                     <div key={v4()} className='card' >
-                                        <NavLink to="/imageviewer" state={user?.email + "/" + val}>
-                                            {/* <img src={image} width='80px' alt='Folder : ' /><h4>{val }</h4> */}
-                                        </NavLink>
-
+                                        <h1>
+                                            {val?.product}
+                                        </h1>
+                                        <MdDeleteOutline
+                                            onClick={() => {
+                                                removeData(val?.id)
+                                            }}
+                                        />
+                                        {!val?.purchase ? <ImCheckboxUnchecked onClick={() => handleCheckboxClick({ ...val }, true)} />
+                                            : <ImCheckboxChecked onClick={() => handleCheckboxClick({ ...val }, false)} />}
+                                        <div style={quantityControlStyle}>
+                                            <button onClick={()=>handleQuantityDecrement({ ...val })} style={buttonStyle}>
+                                                -
+                                            </button>
+                                            <span style={{ margin: '0 8px', fontSize: '16px' }}>{val?.quantity}</span>
+                                            <button onClick={()=>handleQuantityIncrement({ ...val })} style={buttonStyle}>
+                                                +
+                                            </button>
+                                        </div>
                                     </div>
                                 )
                             }
@@ -53,4 +136,17 @@ const AllFolder = () => {
     )
 }
 
+
+
+const quantityControlStyle = {
+    display: 'flex',
+    alignItems: 'center',
+  };
+
+  const buttonStyle = {
+    cursor: 'pointer',
+    marginLeft: '8px',
+    padding: '4px 8px',
+    fontSize: '16px',
+  };
 export default AllFolder
