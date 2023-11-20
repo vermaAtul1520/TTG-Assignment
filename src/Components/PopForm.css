@@ -45,6 +45,8 @@
   
   .buttonContainer {
     margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
   }
   
   .buttonContainer button {
@@ -62,5 +64,12 @@
   .buttonContainer button.close {
     background-color: #f44336;
     color: #fff;
+  }
+
+  .closeBtn {
+    position: absolute;
+    top: 5%;
+    right: 3%;
+    cursor: pointer;
   }
   
