@@ -11,7 +11,8 @@ import {productsRef} from '../firebase'
 import {
     onValue,
     child,
-    remove
+    remove,
+    update
   } from "firebase/database";
   import { MdDeleteOutline } from "react-icons/md";
 import { ImCheckboxUnchecked, ImCheckboxChecked } from "react-icons/im";
@@ -54,21 +55,35 @@ const AllFolder = () => {
         return () => unsubscribe();
     }, []); // Empty dependency array to run the effect only once
 
-    const removeData = async (id) => {
-
-       console.log("sdfghjhgf",productsRef)
-       const productToDeleteRef = child(productsRef, id);
-       console.log("sdfgproductToDeleteRefhjhgf",productToDeleteRef)
-       await remove(productToDeleteRef).then((res)=>console.log(res));
+    const removeData = async (productId) => {
+        try {
+            const productToDeleteRef = child(productsRef, productId);
+            await remove(productToDeleteRef).then((res) => console.log(res));
+        }
+        catch (error) {
+            console.error(`Error updating product with ID ${productId}:`, error);
+        }
     };
 
-    const handleCheckboxClick = (status) => {
-        console.log("status",status)
+    const updateData = async (upDatedData) => {
+        try {
+            const productToDeleteRef = child(productsRef, upDatedData?.id);
+            await update(productToDeleteRef,upDatedData).then((res) => console.log(res)).then((res) => console.log(res));
+        }
+        catch (error) {
+            console.error(`Error updating product with ID ${upDatedData?.id}:`, error);
+        }
+    };
+
+    const handleCheckboxClick = (object,status) => {
+        // console.log("status",object,status);
+        object.purchase=status;
+        // console.log("status",object,status);
+        updateData(object);
     };
 
     return (
         <>
-            {/* <UploadComponent folderdetail={folder} user={user.email} addFolder={setFolder} /> */}
             <button onClick={openPopup}>Add product</button>
             <PopForm isOpen={isPopupOpen} onClose={closePopup} />
             {/* <UploadComponent folderdetail={folder} user={user.email} addFolder={setFolder} /> */}
@@ -88,8 +103,8 @@ const AllFolder = () => {
                                                 removeData(val?.id)
                                             }}
                                         />
-                                        {!val?.purchase ? <ImCheckboxUnchecked onClick={()=>handleCheckboxClick(true)}/>
-                                            : <ImCheckboxChecked onClick={()=>handleCheckboxClick(false)}/>}
+                                        {!val?.purchase ? <ImCheckboxUnchecked onClick={()=>handleCheckboxClick({...val},true)}/>
+                                            : <ImCheckboxChecked onClick={()=>handleCheckboxClick({...val},false)}/>}
                                     </div>
                                 )
                             }
