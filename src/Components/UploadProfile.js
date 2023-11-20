@@ -21,6 +21,7 @@ const UploadProfile = () => {
             navigate('/');
         } catch (error) {
             console.error("Error uploading image:", error);
+            navigate('/');
         }
     }
     

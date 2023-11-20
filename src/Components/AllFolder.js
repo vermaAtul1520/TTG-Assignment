@@ -98,30 +98,48 @@ const AllFolder = () => {
             <PopForm isOpen={isPopupOpen} onClose={closePopup} />
             <div className='allFolderGrid'>
                 {
-                    products.length ?
+                    products?.length ?
                         <div className='cards'>
                             {
                                 products.map((val) =>
 
                                     <div key={v4()} className='card' >
-                                        <h1>
+                                        <h2>
                                             {val?.product}
-                                        </h1>
-                                        <MdDeleteOutline
-                                            onClick={() => {
-                                                removeData(val?.id)
-                                            }}
-                                        />
-                                        {!val?.purchase ? <ImCheckboxUnchecked onClick={() => handleCheckboxClick({ ...val }, true)} />
-                                            : <ImCheckboxChecked onClick={() => handleCheckboxClick({ ...val }, false)} />}
-                                        <div style={quantityControlStyle}>
-                                            <button onClick={()=>handleQuantityDecrement({ ...val })} style={buttonStyle}>
-                                                -
-                                            </button>
-                                            <span style={{ margin: '0 8px', fontSize: '16px' }}>{val?.quantity}</span>
-                                            <button onClick={()=>handleQuantityIncrement({ ...val })} style={buttonStyle}>
-                                                +
-                                            </button>
+                                        </h2>
+                                        <div className='deleteIcon'>
+                                            <MdDeleteOutline
+                                                onClick={() => {
+                                                    removeData(val?.id)
+                                                }}
+                                                size={20}
+                                                color='red'
+                                            />
+                                        </div>
+                                        <div className='wrapper'>
+                                            <div className='purchaseStatus'>
+                                                {!val?.purchase ?
+                                                    <>
+                                                        <ImCheckboxUnchecked onClick={() => handleCheckboxClick({ ...val }, true)} />
+                                                        <h4>In cart</h4>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <ImCheckboxChecked onClick={() => handleCheckboxClick({ ...val }, false)} />
+                                                        <h4>Purchased</h4>
+                                                    </>
+
+                                                }
+                                            </div>
+                                            <div className='quantityControlStyle'>
+                                                <button onClick={() => handleQuantityDecrement({ ...val })} >
+                                                    -
+                                                </button>
+                                                <span style={{ margin: '0 8px', fontSize: '16px' }}>{val?.quantity}</span>
+                                                <button onClick={() => handleQuantityIncrement({ ...val })}>
+                                                    +
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 )
@@ -137,15 +155,5 @@ const AllFolder = () => {
 
 
 
-const quantityControlStyle = {
-    display: 'flex',
-    alignItems: 'center',
-  };
 
-  const buttonStyle = {
-    cursor: 'pointer',
-    marginLeft: '8px',
-    padding: '4px 8px',
-    fontSize: '16px',
-  };
 export default AllFolder
