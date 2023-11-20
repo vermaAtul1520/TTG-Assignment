@@ -33,25 +33,20 @@ const AllFolder = () => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        
-        // Set up a real-time listener to fetch and update the products
         const unsubscribe = onValue(productsRef, (snapshot) => {
             console.log("effect calledddd")
             const data = snapshot.val();
             if (data) {
-                // Convert the data object into an array of products
                 const productList = Object.keys(data).map((productId) => ({
                     id: productId,
                     ...data[productId],
                 }));
-                console.log("productList",productList)
                 setProducts(productList);
             } else {
                 setProducts([]);
             }
         });
-
-        // Clean up the listener when the component unmounts
+        
         return () => unsubscribe();
     }, []); 
 
@@ -98,9 +93,10 @@ const AllFolder = () => {
 
     return (
         <>
-            <button onClick={openPopup}>Add product</button>
+            <div className='addButton'>
+                <button onClick={openPopup}>Add product</button>
+            </div>
             <PopForm isOpen={isPopupOpen} onClose={closePopup} />
-            {/* <UploadComponent folderdetail={folder} user={user.email} addFolder={setFolder} /> */}
             <div className='allFolderGrid'>
                 {
                     products.length ?

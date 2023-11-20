@@ -3,9 +3,9 @@
 /* styles.css */
 
 .parentModal {
-   
-    width: 50%;
-  }
+  max-width: 500px;
+  width: 70%;
+}
   
   .parentModal h2 {
     margin-bottom: 20px;
