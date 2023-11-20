@@ -5,7 +5,7 @@ import Home from './Components/Home';
 // import ImageViewer from './components/ImageViewer';
 import Login from './Components/Login';
 import Register from './Components/Register';
-// import UploadProfile from './components/UploadProfile';
+import UploadProfile from './Components/UploadProfile';
 
 import './App.css'
 // import Premium from './components/Premium';
@@ -19,7 +19,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-        {/* <Route path='/uploadprofile' element={<UploadProfile />} /> */}
+        <Route path='/uploadprofile' element={<UploadProfile />} />
         {/* <Route path='/imageviewer' element={<ImageViewer />} /> */}
         {/* <Route path='/upgradetopremium' element={<Premium />} /> */}
         {/* <Route path='/about' element={<About/>} /> */}
