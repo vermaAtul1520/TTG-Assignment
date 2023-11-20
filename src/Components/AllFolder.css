@@ -11,8 +11,9 @@
 }
 
 .card {
+    position: relative;
     margin: 20px;
-    background-color: rgba(21, 29, 29, 0.327);
+    background-color: rgba(189, 202, 202, 0.327);
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 0 10px white;
@@ -31,9 +32,9 @@
     justify-content: center;
     width: 100%;
     margin-top: 10px;
-  }
-  
-  .addButton button {
+}
+
+.addButton button {
     padding: 10px 20px;
     background-color: #4CAF50;
     color: #fff;
@@ -41,13 +42,55 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-  }
-.card a svg {
-    font-size: 80px;
-    color: rgb(39, 36, 25);
 }
 
-.card a h4 {
-    margin-left: 20px;
-    color: rgb(255, 255, 255);
+
+.card h2 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+.deleteIcon {
+    position: absolute;
+    top: 3%;
+    right: 2%;
+}
+
+.purchaseStatus {
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+.purchaseStatus h4 {
+    margin: 0px;
+    margin-left: 10px;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quantityControlStyle {
+    display: 'flex';
+    align-items: 'center';
+    background-color: white;
+    border-radius: 10px;
+    /* padding: 2px; */
+    /* width: 30%; */
+    justify-content: space-around;
+    /* min-width: 60px */
+    /* height: 30px; */
+
+}
+
+.quantityControlStyle button {
+    font-size: 18px;
+    border: none;
+    background-color: transparent;
+    color: black;
+    cursor: pointer;
 }

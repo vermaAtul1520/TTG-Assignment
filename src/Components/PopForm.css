@@ -5,6 +5,7 @@
 .parentModal {
   max-width: 500px;
   width: 70%;
+  z-index: 100;
 }
   
   .parentModal h2 {
