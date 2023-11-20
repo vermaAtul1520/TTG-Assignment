@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {productsRef} from '../firebase'
+import { RxCrossCircled } from "react-icons/rx";
 import './PopForm.css' 
 import {
   // get,
@@ -25,19 +26,18 @@ const PopForm = ({ isOpen, onClose }) => {
   };
 
   const handleSubmit = () => {
-    // You can perform any action with the input value here
-    // console.log('Submitted value:', inputValue);
-    createEntries({
-      product: inputValue,
-      purchase: isPurchased,
-      quantity: 1
-    }).then(() => {
-      console.log("done");
-    });
-    // Reset the input value
+    if(inputValue?.length){
+      createEntries({
+        product: inputValue,
+        purchase: isPurchased,
+        quantity: 1
+      }).then(() => {
+        console.log("done");
+      });
+    }
+   
     setInputValue('');
     setIsPurchased(false);
-    // Close the pop-up form
     onClose();
   };
 
@@ -64,7 +64,12 @@ const PopForm = ({ isOpen, onClose }) => {
       </div>
       <div className='buttonContainer'>
         <button className='submit' onClick={handleSubmit}>Submit</button>
-        <button className='close' onClick={onClose}>Close</button>
+      </div>
+      <div className='closeBtn'>
+        <RxCrossCircled
+          onClick={onClose}
+          size={25}
+        />
       </div>
     </div>
   );
