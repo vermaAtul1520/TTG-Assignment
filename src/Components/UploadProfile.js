@@ -50,18 +50,23 @@ const UploadProfile = () => {
 
 
     return (
-        <div className='parent'>
-            <h1>Upload Profile Picture</h1>
-            <div className="childUP">
-                <div className='childImg'>
-                    <img src={baseImage} height="200px" alt='Profile' />
+        <>
+            <div className='parent'>
+                <h1>Upload Profile Picture</h1>
+                <div className="childUP">
+                    <div className='childImg'>
+                        <img src={baseImage} height="200px" alt='Profile' />
+                    </div>
+                    <div>
+                        <input type="file" accept='image/*' onChange={handleChange} />
+                        <button className='prfbtn' onClick={uploadImage} >Upload</button>
+                    </div>
                 </div>
-                <div>
-                    <input type="file" accept='image/*' onChange={handleChange} />
-                    <button className='prfbtn' onClick={uploadImage} >Upload</button>
+                <div className='skipButton'>
+                    <button onClick={() => {navigate('/'); }}>Skip</button>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

@@ -14,11 +14,12 @@ import {
     update
   } from "firebase/database";
   import { MdDeleteOutline } from "react-icons/md";
+  import { Bars } from 'react-loading-icons'
 import { ImCheckboxUnchecked, ImCheckboxChecked } from "react-icons/im";
 // import image from './folder.png'
 
 const AllFolder = () => {
-
+    const [loading, setLoading]= useState(false)
     const [isPopupOpen, setPopupOpen] = useState(false);
 
     const openPopup = () => {
@@ -33,7 +34,6 @@ const AllFolder = () => {
 
     useEffect(() => {
         const unsubscribe = onValue(productsRef, (snapshot) => {
-            console.log("effect calledddd")
             const data = snapshot.val();
             if (data) {
                 const productList = Object.keys(data).map((productId) => ({
@@ -46,7 +46,11 @@ const AllFolder = () => {
             }
         });
 
-        return () => unsubscribe();
+        return () => {
+            setLoading(true);
+            unsubscribe();
+            setLoading(false);
+        };
     }, []); 
 
     const removeData = async (productId) => {
@@ -149,6 +153,9 @@ const AllFolder = () => {
                         null
                 }
             </div>
+            {loading && <div className='loader'>
+                <Bars />
+            </div>}
         </>
     )
 }

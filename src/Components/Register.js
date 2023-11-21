@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
 import './Register.css'
 import { ToastContainer, toast } from 'react-toastify';
+import { Bars } from 'react-loading-icons'
 import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
@@ -12,7 +13,8 @@ const Register = () => {
     const [name, setName] = useState("")
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
-    const [passtype, setPasstype] = useState('password')
+    const [passtype, setPasstype] = useState('password');
+    const [loading, setLoading]= useState(false);
 
     function showPassword() {
         setPasstype('text')
@@ -23,7 +25,7 @@ const Register = () => {
     }
 
     const register = async (e) => {
-        
+        setLoading(true);
         e.preventDefault();
 
         try {
@@ -47,6 +49,7 @@ const Register = () => {
                 progress: undefined,
             });
         }
+        setLoading(false);
     };
 
 
@@ -88,6 +91,9 @@ const Register = () => {
                 <button className='loginBTN' onClick={register}>SignUp</button>
                 <NavLink to='/login'>Have account?</NavLink>
             </div>
+            {loading && <div className='loader'>
+                <Bars />
+            </div>}
         </>
 
     )

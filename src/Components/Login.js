@@ -3,7 +3,7 @@ import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate, NavLink } from "react-router-dom"
 import './Login.css'
-import './Register.css'
+// import './Register.css'
 import { ToastContainer, toast } from 'react-toastify';
 import { Bars } from 'react-loading-icons'
 
