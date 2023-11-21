@@ -96,3 +96,17 @@
 #createAcc{
     margin-top: 80px;
 }
+
+.loader {
+    position:absolute;
+    top:40%;
+    left: 45%;
+}
+
+@media screen and (max-width: 734px) {
+    .loader {
+        position: absolute;
+        top: 35%;
+        left: 35%;
+    }
+}

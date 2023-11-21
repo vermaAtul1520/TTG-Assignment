@@ -78,14 +78,20 @@
 @media screen and (max-width: 734px) {
     .child {
         flex-direction: column;
-        height: 90%;
+        height: 85%;
     }
 
     .aboutMain {
-        height: 100vh;
+        height: 170vh;
     }
 
     .childleft img{
         width: 200px;
+    }
+
+    .socialAbout {
+        width: 115%;
+        display: flex;
+        justify-content: space-around;
     }
 }
