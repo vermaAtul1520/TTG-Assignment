@@ -41,7 +41,7 @@
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-    padding: 50px 35px;
+    padding: 65px 35px;
 }
 
 .loginForm * {
@@ -50,6 +50,11 @@
 
 .loginForm::placeholder {
     color: white;
+}
+
+.loginForm h3 {
+    margin-top: 0%;
+    margin-bottom: 0%;
 }
 
 #loginhead {
@@ -82,7 +87,7 @@
 
 .loginBTN {
     margin-top: 30px;
-    width: 90%;
+    width: 97%;
     background-color: #ffffff;
     color: #080710;
     padding: 15px 0;
@@ -90,4 +95,19 @@
     font-weight: 600;
     border-radius: 5px;
     cursor: pointer;
+}
+
+
+.loader {
+    position:absolute;
+    top:40%;
+    left: 45%;
+}
+
+@media screen and (max-width: 734px) {
+    .loader {
+        position: absolute;
+        top: 35%;
+        left: 35%;
+    }
 }
