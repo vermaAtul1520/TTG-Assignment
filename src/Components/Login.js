@@ -5,15 +5,17 @@ import { useNavigate, NavLink } from "react-router-dom"
 import './Login.css'
 import './Register.css'
 import { ToastContainer, toast } from 'react-toastify';
+import { Bars } from 'react-loading-icons'
 
 const Login = () => {
-
+    const [loading, setLoading]= useState(false);
     const navigate = useNavigate();
 
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     
     const login = async (e) => {
+        setLoading(true);
         e.preventDefault();
 
         try {
@@ -34,6 +36,7 @@ const Login = () => {
                 progress: undefined,
             });
         }
+        setLoading(false);
     };
 
     return (
@@ -65,6 +68,9 @@ const Login = () => {
 
                 <NavLink to='/register' id='createAcc'>Create account?</NavLink>
             </div>
+            {loading && <div className='loader'>
+                <Bars />
+            </div>}
         </>
     )
 }
