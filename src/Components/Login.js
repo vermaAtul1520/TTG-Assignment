@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, GoogleAuthProvider , signInWithPopup} from "firebase/auth";
 import { useNavigate, NavLink } from "react-router-dom"
 import './Login.css'
 // import './Register.css'
@@ -39,6 +39,19 @@ const Login = () => {
         setLoading(false);
     };
 
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        console.log("m,", provider)
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const token = result?.credential?.accessToken;
+            const user = result?.user;
+            navigate("/")
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
 
         <>
@@ -66,7 +79,13 @@ const Login = () => {
 
                 <button className='loginBTN' onClick={login}>SignIn</button>
 
-                <NavLink to='/register' id='createAcc'>Create account?</NavLink>
+                <div className='signinContainer'>
+                    <button onClick={handleGoogleSignIn}>
+                        Sign in with Google
+                    </button>
+
+                    <NavLink to='/register' id='createAcc'>Create account?</NavLink>
+                </div>
             </div>
             {loading && <div className='loader'>
                 <Bars />

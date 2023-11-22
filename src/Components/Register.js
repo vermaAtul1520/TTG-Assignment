@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase";
 import './Register.css'
 import { ToastContainer, toast } from 'react-toastify';
@@ -52,6 +52,19 @@ const Register = () => {
         setLoading(false);
     };
 
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            console.log("sdfgh", result)
+            const token = result?.credential?.accessToken;
+            const user = result?.user;
+            navigate("/")
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
 
     return (
         <>
@@ -89,7 +102,12 @@ const Register = () => {
                 </div>
 
                 <button className='loginBTN' onClick={register}>SignUp</button>
-                <NavLink to='/login'>Have account?</NavLink>
+                <div className='signinContainer'>
+                    <button onClick={handleGoogleSignIn}>
+                        Sign up with Google
+                    </button>
+                    <NavLink to='/login'>Have account?</NavLink>
+                </div>
             </div>
             {loading && <div className='loader'>
                 <Bars />
