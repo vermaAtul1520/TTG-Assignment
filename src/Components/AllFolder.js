@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './AllFolder.css'
-import { auth, storage } from '../firebase'
-// import { ref, listAll } from 'firebase/storage'
-import { onAuthStateChanged } from "firebase/auth";
 import { v4 } from 'uuid'
-import { NavLink } from 'react-router-dom'
 import PopForm from './PopForm';
 import {productsRef} from '../firebase'
 import {
